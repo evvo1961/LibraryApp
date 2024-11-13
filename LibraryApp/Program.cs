@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryAppApi.Data;
 using Serilog;
+using LibraryAppApi;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(Options =>
 {
     Options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 //Add support to logging with SERILOG
 builder.Host.UseSerilog((context, configuration) =>
@@ -31,6 +37,21 @@ if (app.Environment.IsDevelopment())
 
 //Add support to logging request with SERILOG
 app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler(options =>
+{
+    options.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        context.Response.ContentType = "application/json";
+        var exception = context.Features.Get<IExceptionHandlerFeature>();
+        if (exception != null)
+        {
+            var message = $"{exception.Error.Message}";
+            await context.Response.WriteAsync(message).ConfigureAwait(false);
+        }
+    });
+});
 
 app.UseHttpsRedirection();
 

@@ -45,6 +45,7 @@ namespace LibraryAppApi.Controllers
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await appDbContext.Books.FirstOrDefaultAsync(x => x.Id == id);
+            
             if (book != null) 
             {
                 return Ok(book);
