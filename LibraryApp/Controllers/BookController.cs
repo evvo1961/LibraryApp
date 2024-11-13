@@ -10,10 +10,12 @@ namespace LibraryAppApi.Controllers
     public class BookController : ControllerBase
     {
         private readonly AppDbContext appDbContext;
+        private readonly ILogger<Book> _logger;
 
-        public BookController(AppDbContext appDbContext)
+        public BookController(AppDbContext appDbContext, ILogger<Book> logger)
         {
             this.appDbContext = appDbContext;
+            _logger = logger;
         }
 
         //Create a book
@@ -26,13 +28,14 @@ namespace LibraryAppApi.Controllers
                 await appDbContext.SaveChangesAsync();
                 return Ok(await appDbContext.Books.ToListAsync());
             }
+            _logger.LogInformation("Object instance not set");
             return BadRequest("Object instance not set");
         }
 
         //Get all books
         [HttpGet]
         public async Task<ActionResult<List<Book>>> GetAllBooks()
-        {
+        {            
             var books = await appDbContext.Books.ToListAsync();
             return Ok(books);
         }
@@ -46,6 +49,7 @@ namespace LibraryAppApi.Controllers
             {
                 return Ok(book);
             }
+            _logger.LogInformation("Book is not available");
             return BadRequest("Book is not available");
         }
 
@@ -64,6 +68,7 @@ namespace LibraryAppApi.Controllers
                 await appDbContext.SaveChangesAsync();
                 return Ok(book);
             }
+            _logger.LogInformation("Book not found");
             return BadRequest("Book not found");
         }
 
@@ -78,6 +83,7 @@ namespace LibraryAppApi.Controllers
                 await appDbContext.SaveChangesAsync();
                 return Ok(await appDbContext.Books.ToListAsync());
             }
+            _logger.LogInformation("Book not found");
             return NotFound();
         }
 

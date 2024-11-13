@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryAppApi.Data;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ builder.Services.AddDbContext<AppDbContext>(Options =>
     Options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//Add support to logging with SERILOG
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +28,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Add support to logging request with SERILOG
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
