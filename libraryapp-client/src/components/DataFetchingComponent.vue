@@ -16,7 +16,7 @@
                     <td>{{item.id}}</td>
                     <td>{{item.title }}</td>
                     <td>{{item.author }}</td>
-                    <td>{{item.publicationDate}}</td>
+                    <td>{{new Date(item.publicationDate).toLocaleDateString("en-GB")}}</td>
                     <td>{{item.editionNumber}}</td>
                     <td>{{item.isbn}}</td>
                 </tr>                
