@@ -18,6 +18,7 @@ namespace LibraryAppUI.Models
         [Display(Name = "Edition Number")]
         public int? EditionNumber { get; set; }
         [Required]
+        [RegularExpression("^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\\d-]+$", ErrorMessage = "ISBN number must be properly formatted.")]
         public string? ISBN { get; set; }        
     }
 }

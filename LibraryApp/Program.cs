@@ -22,6 +22,18 @@ builder.Services.AddDbContext<AppDbContext>(Options =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        builder =>
+        {
+            //This is how you tell your app to allow cors
+            builder.WithOrigins("*")
+                    .WithMethods("POST", "DELETE", "GET")
+                    .AllowAnyHeader();
+        });
+});
+
 //Add support to logging with SERILOG
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
@@ -52,6 +64,8 @@ app.UseExceptionHandler(options =>
         }
     });
 });
+
+app.UseCors("MyPolicy");
 
 app.UseHttpsRedirection();
 

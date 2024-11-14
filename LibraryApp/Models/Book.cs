@@ -10,7 +10,7 @@ namespace LibraryAppApi.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime PublicationDate { get; set; }
-        public int? EditionNumber { get; set; }       
+        public int? EditionNumber { get; set; }        
         public string? ISBN { get; set; }        
     }
 }

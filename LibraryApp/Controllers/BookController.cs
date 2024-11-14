@@ -2,6 +2,7 @@
 using LibraryAppApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Http.Cors;
 
 namespace LibraryAppApi.Controllers
 {
@@ -33,7 +34,7 @@ namespace LibraryAppApi.Controllers
         }
 
         //Get all books
-        [HttpGet]
+        [HttpGet]       
         public async Task<ActionResult<List<Book>>> GetAllBooks()
         {            
             var books = await appDbContext.Books.ToListAsync();
