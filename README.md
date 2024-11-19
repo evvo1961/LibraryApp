@@ -15,7 +15,7 @@ Swagger endpoint - https://localhost:7100/swagger/index.html
 There is an additional vue project at: 
 LibraryApp\libraryapp-client that displays the list of books
 
-npm run serve
+npm run dev
 
 runs at http://localhost:8080/
 
